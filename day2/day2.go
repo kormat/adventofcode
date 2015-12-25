@@ -16,24 +16,31 @@ func main() {
 		log.Fatal(err)
 	}
 	defer file.Close()
-	total := 0
+	paper := 0
+	ribbon := 0
 
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
-		total += calcPaper(scanner.Text())
+		dims := parseDims(scanner.Text())
+		paper += calcPaper(dims)
+		ribbon += calcRibbon(dims)
 	}
-	fmt.Printf("The elves need %d sqft of wrapping paper.\n", total)
+	fmt.Printf("The elves need %d sqft of wrapping paper, and %d feet of ribbon.\n", paper, ribbon)
 }
 
-func calcPaper(arg string) int {
+func parseDims(arg string) []int {
 	var dims []int
-	sqft := 0
 	for _, c := range strings.Split(arg, "x") {
 		i, _ := strconv.Atoi(c)
 		dims = append(dims, i)
 	}
 	sort.Ints(dims)
+	return dims
+}
+
+func calcPaper(dims []int) int {
+	sqft := 0
 	for i, val1 := range dims {
 		if i == len(dims) {
 			break
@@ -44,4 +51,11 @@ func calcPaper(arg string) int {
 	}
 	sqft += dims[0] * dims[1]
 	return sqft
+}
+
+func calcRibbon(dims []int) int {
+	feet := 0
+	feet += 2 * (dims[0] + dims[1])
+	feet += dims[0] * dims[1] * dims[2]
+	return feet
 }
