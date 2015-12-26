@@ -1,68 +1,78 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"github.com/kormat/adventofcode/util"
 	"log"
 	"os"
 	"unicode/utf8"
 )
 
+type Location struct {
+	X int
+	Y int
+}
+
 func main() {
-	file, err := os.Open(os.Args[1])
-	if err != nil {
-		log.Fatal(err)
+	lines, err := util.ReadFileArg()
+	if err {
+		os.Exit(1)
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-
-	for scanner.Scan() {
-		dirs := scanner.Text()
+	for i, dirs := range lines {
+		fmt.Printf("%d. Directions: %d. Houses visited:\n", i, len(dirs))
 		year1 := parseDirsY1(dirs)
+		fmt.Printf("  Year 1: %d\n", year1)
+		if len(dirs)%2 != 0 {
+			continue
+		}
 		year2 := parseDirsY2(dirs)
-		fmt.Printf("From %d directions, %d houses were visited in Year 1, %d in Year 2.\n", len(dirs), year1, year2)
+		fmt.Printf("  Year 2: %d\n", year2)
 	}
 }
 
-func parseDir(c rune, x, y *int) {
+func parseDir(c rune, loc *Location) {
 	switch c {
 	case '^':
-		*y++
+		loc.Y++
 	case 'v':
-		*y--
+		loc.Y--
 	case '<':
-		*x--
+		loc.X--
 	case '>':
-		*x++
+		loc.X++
+	default:
+		log.Fatal("Invalid direction '%c'", c)
 	}
 }
 
 func parseDirsY1(dirs string) int {
-	houses := make(map[[2]int]bool)
-	x, y := 0, 0
-	houses[[2]int{x, y}] = true
+	houses := make(map[Location]bool)
+	loc := Location{0, 0}
+	houses[loc] = true
 	for _, c := range dirs {
-		parseDir(c, &x, &y)
-		houses[[2]int{x, y}] = true
+		parseDir(c, &loc)
+		houses[loc] = true
 	}
 	return len(houses)
 }
 
 func parseDirsY2(dirs string) int {
-	houses := make(map[[2]int]bool)
-	sx, sy := 0, 0
-	rx, ry := 0, 0
-	houses[[2]int{sx, sy}] = true
+	houses := make(map[Location]bool)
+	sloc := Location{0, 0}
+	rloc := Location{0, 0}
+	houses[sloc] = true
 	for i := 0; i < len(dirs); {
-		dir, width := utf8.DecodeRuneInString(dirs[i:])
-		parseDir(dir, &sx, &sy)
-		houses[[2]int{sx, sy}] = true
-		i += width
-		dir, width = utf8.DecodeRuneInString(dirs[i:])
-		parseDir(dir, &rx, &ry)
-		houses[[2]int{rx, ry}] = true
-		i += width
+		moveY2(dirs, &i, &sloc)
+		houses[sloc] = true
+		moveY2(dirs, &i, &rloc)
+		houses[rloc] = true
 	}
 	return len(houses)
+}
+
+func moveY2(dirs string, i *int, loc *Location) {
+	dir, width := utf8.DecodeRuneInString(dirs[*i:])
+	parseDir(dir, loc)
+	*i += width
 }
