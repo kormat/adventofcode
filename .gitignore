@@ -25,4 +25,5 @@ _testmain.go
 
 .*.swp
 
-day?/day?
+day*/day?
+day*/day?p?
