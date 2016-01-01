@@ -6,13 +6,13 @@ import (
 	"os"
 )
 
-func ReadFileArg() ([]string, bool) {
+func ReadFileArg(args []string) ([]string, bool) {
 	var lines []string
-	if len(os.Args) != 2 {
-		log.Printf("Expecting a single input file as argument (got %v instead)", os.Args[1:])
+	if len(args) != 1 {
+		log.Printf("Expecting a single input file as argument (got %v instead)", args)
 		return lines, true
 	}
-	file, err := os.Open(os.Args[1])
+	file, err := os.Open(args[0])
 	if err != nil {
 		log.Printf("Error opening file: %s", err)
 		return lines, true
