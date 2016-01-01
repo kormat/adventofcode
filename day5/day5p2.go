@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	lines, err := util.ReadFileArg()
+	lines, err := util.ReadFileArg(os.Args[1:])
 	if err {
 		os.Exit(1)
 	}
