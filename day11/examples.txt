@@ -1,0 +1,5 @@
+hijklmmn - bad
+abbceffg - bad
+abbcegjk - bad
+abcdefgh -> abcdffaa
+ghijklmn -> ghjaabcc
