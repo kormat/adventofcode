@@ -1,31 +1,6 @@
-package main
+package p2
 
-import (
-	"fmt"
-	"github.com/kormat/adventofcode/util"
-	"os"
-)
-
-func main() {
-	lines, ok := util.ReadFileArg(os.Args[1:])
-	if !ok {
-		os.Exit(1)
-	}
-	nice := 0
-	naughty := 0
-	for i, word := range lines {
-		result := isStringNice(word)
-		if result {
-			nice++
-		} else {
-			naughty++
-		}
-		fmt.Printf("%d. %s: %v\n", i, word, result)
-	}
-	fmt.Printf("Summary: %d words, %d nice, %d naughty\n", len(lines), nice, naughty)
-}
-
-func isStringNice(chars string) bool {
+func IsStringNice(chars string) bool {
 	if hasValidPairs(chars) && hasValidRepeat(chars) {
 		return true
 	}

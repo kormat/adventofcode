@@ -1,9 +1,6 @@
-package main
+package p1
 
 import (
-	"fmt"
-	"github.com/kormat/adventofcode/util"
-	"os"
 	"strings"
 )
 
@@ -11,26 +8,7 @@ const VOWELS = "aeiou"
 
 var BANNED = [...]string{"ab", "cd", "pq", "xy"}
 
-func main() {
-	lines, ok := util.ReadFileArg(os.Args[1:])
-	if !ok {
-		os.Exit(1)
-	}
-	nice := 0
-	naughty := 0
-	for i, word := range lines {
-		result := isStringNice(word)
-		if result {
-			nice++
-		} else {
-			naughty++
-		}
-		fmt.Printf("%d. %s: %v\n", i, word, result)
-	}
-	fmt.Printf("Summary: %d words, %d nice, %d naughty\n", len(lines), nice, naughty)
-}
-
-func isStringNice(word string) bool {
+func IsStringNice(word string) bool {
 	vowels := 0
 	dups := false
 	for i := 0; i < len(word); i++ {
