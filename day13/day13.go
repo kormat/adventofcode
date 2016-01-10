@@ -12,8 +12,8 @@ var p2 = flag.Bool("2", false, "Calculate part 2 result")
 
 func main() {
 	flag.Parse()
-	lines, err := util.ReadFileArg(flag.Args())
-	if err {
+	lines, ok := util.ReadFileArg(flag.Args())
+	if !ok {
 		os.Exit(1)
 	}
 	day13.Parse(lines, *p2)

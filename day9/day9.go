@@ -12,8 +12,8 @@ var shortest = flag.Bool("short", true, "find shortest path")
 
 func main() {
 	flag.Parse()
-	lines, err := util.ReadFileArg(flag.Args())
-	if err {
+	lines, ok := util.ReadFileArg(flag.Args())
+	if !ok {
 		os.Exit(1)
 	}
 	places := make(day9.Places)

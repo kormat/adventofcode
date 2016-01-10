@@ -10,12 +10,12 @@ func ReadFileArg(args []string) ([]string, bool) {
 	var lines []string
 	if len(args) != 1 {
 		log.Printf("Expecting a single input file as argument (got %v instead)", args)
-		return lines, true
+		return lines, false
 	}
 	file, err := os.Open(args[0])
 	if err != nil {
 		log.Printf("Error opening file: %s", err)
-		return lines, true
+		return lines, false
 	}
 	defer file.Close()
 
@@ -23,5 +23,5 @@ func ReadFileArg(args []string) ([]string, bool) {
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
-	return lines, false
+	return lines, true
 }

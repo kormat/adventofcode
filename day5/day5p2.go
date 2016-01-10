@@ -7,8 +7,8 @@ import (
 )
 
 func main() {
-	lines, err := util.ReadFileArg(os.Args[1:])
-	if err {
+	lines, ok := util.ReadFileArg(os.Args[1:])
+	if !ok {
 		os.Exit(1)
 	}
 	nice := 0
