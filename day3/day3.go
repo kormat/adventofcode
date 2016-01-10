@@ -5,7 +5,6 @@ import (
 	"github.com/kormat/adventofcode/util"
 	"log"
 	"os"
-	"unicode/utf8"
 )
 
 type Location struct {
@@ -58,21 +57,18 @@ func parseDirsY1(dirs string) int {
 }
 
 func parseDirsY2(dirs string) int {
+	runes := []rune(dirs)
 	houses := make(map[Location]bool)
 	sloc := Location{0, 0}
 	rloc := Location{0, 0}
 	houses[sloc] = true
-	for i := 0; i < len(dirs); {
-		moveY2(dirs, &i, &sloc)
+	for i := 0; i < len(runes); {
+		parseDir(runes[i], &sloc)
 		houses[sloc] = true
-		moveY2(dirs, &i, &rloc)
+		i++
+		parseDir(runes[i], &rloc)
 		houses[rloc] = true
+		i++
 	}
 	return len(houses)
-}
-
-func moveY2(dirs string, i *int, loc *Location) {
-	dir, width := utf8.DecodeRuneInString(dirs[*i:])
-	parseDir(dir, loc)
-	*i += width
 }
