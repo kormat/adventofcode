@@ -13,13 +13,11 @@ func main() {
 	if !ok {
 		os.Exit(1)
 	}
-	nice, naughty := process(lines, p1.IsStringNice)
-	fmt.Printf("Part 1: %d words, %d nice, %d naughty\n", len(lines), nice, naughty)
-	nice, naughty = process(lines, p2.IsStringNice)
-	fmt.Printf("Part 2: %d words, %d nice, %d naughty\n", len(lines), nice, naughty)
+	process(1, lines, p1.IsStringNice)
+	process(2, lines, p2.IsStringNice)
 }
 
-func process(lines []string, f func(word string) bool) (int, int) {
+func process(part int, lines []string, f func(word string) bool) {
 	nice := 0
 	naughty := 0
 	for _, word := range lines {
@@ -30,5 +28,5 @@ func process(lines []string, f func(word string) bool) (int, int) {
 			naughty++
 		}
 	}
-	return nice, naughty
+	fmt.Printf("Part %v: %d words, %d nice, %d naughty\n", part, len(lines), nice, naughty)
 }
