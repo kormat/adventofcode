@@ -7,12 +7,15 @@ import (
 )
 
 const GRID_SIZE = 1000
+
 const (
 	CMD_UNKNOWN = iota
 	CMD_TURN_ON
 	CMD_TURN_OFF
 	CMD_TOGGLE
 )
+
+type Grid [GRID_SIZE][GRID_SIZE]int
 
 type Coords struct {
 	X1, Y1, X2, Y2 int
