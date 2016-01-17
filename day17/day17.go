@@ -10,6 +10,8 @@ import (
 	"strconv"
 )
 
+const maxL = 150
+
 func main() {
 	flag.Parse()
 	args := flag.Args()
@@ -19,6 +21,7 @@ func main() {
 	}
 	cntrs := parseContainers(lines)
 	fmt.Printf("Containers: %v\n", cntrs)
+	findCombinations(cntrs)
 }
 
 func parseContainers(lines []string) []int {
@@ -36,4 +39,38 @@ func parseInt(line int, input, desc string) int {
 		log.Fatal("Unable to parse %s '%s' on line %d: %s", desc, input, line, err)
 	}
 	return ret
+}
+
+func findCombinations(cntrs []int) {
+	used := []int{}
+	avail := make([]int, len(cntrs))
+	copy(avail, cntrs)
+	fmt.Printf("used: %v. avail: %v\n", used, avail)
+}
+
+func findCombo(used, avail []int) {
+	curr := sumCntrs(used)
+	fmt.Printf("Curr: %d Used: %v Avail: %v\n", curr, used, avail)
+	new_used := make([]int, len(used)+1)
+	for len(avail) > 0 {
+		next := avail[0]
+		avail = avail[1:]
+		new_used[len(used)] = next
+		switch {
+		case curr+next == maxL:
+			fmt.Printf("Found match: %v\n", new_used)
+		case curr+next > maxL:
+			break
+		default:
+			findCombo(new_used, avail)
+		}
+	}
+}
+
+func sumCntrs(cntrs []int) int {
+	var total int
+	for _, c := range cntrs {
+		total += c
+	}
+	return total
 }
